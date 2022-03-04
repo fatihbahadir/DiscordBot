@@ -1,5 +1,6 @@
 from os import name
 import discord
+from discord import channel
 from discord.ext import commands
 import yaml # Burada yaml ile veri import edicez 
             # pip install yaml
@@ -30,14 +31,16 @@ async def on_ready():
     print("Bot is online now")
     await Bot.get_channel(main_channel_id).send(prettify("bot is online"))
 
-@Bot.event
-async def on_member_join(member):
-    channel = discord.utils.get(member.guild.text_channels, name="welcome")
-    await channel.send(f"{member.mention} has joined us.Welcome to our server.")
-    print(f"{member} has joined to the server!")
+# @Bot.event
+# async def on_member_join(member):
+#     channel = discord.utils.get(member.guild.text_channels, name="welcome")
+#     await channel.send(prettify(f"{member.mention.display_name} has joined us.Welcome to our server."))
+#     print(f"{member} has joined to the server!")
 
 @Bot.event
 async def on_member_remove(member):
+    channel=discord.utils.get(member.guild.text_channels, name="those-who-left-us")
+    await channel.send(f"{member.mention.display_name} has left us.Good bye")
     print(f"{member} has left the server!")
 
 @Bot.command
