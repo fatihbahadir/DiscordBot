@@ -47,4 +47,10 @@ async def on_member_remove(member):
 async def selam(msg):
     msg.send("Selam!")
 
+
+@Bot.command()
+async def clear(ctx, amount=5):
+    await ctx.channel.purge(limit=amount)
+    await ctx.send(f"I have deleted {amount} messages.")
+
 Bot.run(bot_token)
