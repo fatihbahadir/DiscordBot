@@ -1,4 +1,4 @@
-from os import name
+from Utils.func import prettify
 import discord
 from discord import channel
 from discord.ext import commands
@@ -22,25 +22,22 @@ main_channel_id = int(DATA['main-channel'])
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 Bot = commands.Bot(bot_prefix, intents=intents) # Declare prefix from yaml file
 
-def prettify(text):
-    return "```"+text+"```"
-
 # Initial Command
 @Bot.event
 async def on_ready():
     print("Bot is online now")
     await Bot.get_channel(main_channel_id).send(prettify("bot is online"))
 
-# @Bot.event
-# async def on_member_join(member):
-#     channel = discord.utils.get(member.guild.text_channels, name="welcome")
-#     await channel.send(prettify(f"{member.mention.display_name} has joined us.Welcome to our server."))
-#     print(f"{member} has joined to the server!")
+@Bot.event
+async def on_member_join(member):
+    channel = discord.utils.get(member.guild.text_channels, name="welcome")
+    await channel.send(prettify(f"{member.display_name} has joined us.Welcome to our server."))
+    print(f"{member} has joined to the server!")
 
 @Bot.event
 async def on_member_remove(member):
     channel=discord.utils.get(member.guild.text_channels, name="those-who-left-us")
-    await channel.send(f"{member.mention.display_name} has left us.Good bye")
+    await channel.send(prettify(f"{member.display_name} has left us.Good bye"))
     print(f"{member} has left the server!")
 
 @Bot.command
