@@ -1,6 +1,3 @@
-from email import message
-from http import client
-from tracemalloc import start
 import discord
 from discord.ext import commands
 import yaml # Burada yaml ile veri import edicez 
