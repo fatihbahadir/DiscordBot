@@ -51,4 +51,3 @@ async def clear(ctx, amount=5):
     await ctx.send(f"I have deleted {amount} messages.")
 
 Bot.run(bot_token)
-# deneme
