@@ -1,4 +1,7 @@
+from os import name
 import discord
+from discord import channel
+from discord import member
 from discord.ext import commands
 import yaml # Burada yaml ile veri import edicez 
             # pip install yaml
@@ -23,10 +26,12 @@ Bot = commands.Bot(bot_prefix, intents=intents) # Declare prefix from yaml file
 # Initial Command
 @Bot.event
 async def on_ready():
-    print("Bot has been started succefully.")
+    await channel.send("I woke up")
 
 @Bot.event
 async def on_member_join(member):
+    channel = discord.utils.get(member.guild.text_channels, name="welcome")
+    await channel.send(f"{member.mention} has joined us.Welcome to our server.")
     print(f"{member} has joined to the server!")
 
 @Bot.event
