@@ -20,7 +20,7 @@ bot_token = DATA['token'] # Assign bot token
 bot_prefix = DATA['prefix'] # Assign bot prefix
 main_channel_id = DATA['main-channel']
 
-intents = discord.Intents(message=True, guilds=True, reactions=True, members=True, presences=True)
+intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 Bot = commands.Bot(bot_prefix, intents=intents) # Declare prefix from yaml file
 
 # Initial Command
@@ -37,13 +37,7 @@ async def on_member_remove(member):
     print(f"{member} has left the server!")
 
 @Bot.command
-async def SendStartMessage(msg):
-    start_message ="""
-```
-Bot has been runned succesfully.
-```
-    """
-    await msg.send(start_message)
-
+async def selam(msg):
+    msg.send("Selam!")
 
 Bot.run(bot_token)
