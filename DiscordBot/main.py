@@ -1,7 +1,5 @@
 from os import name
 import discord
-from discord import channel
-from discord import member
 from discord.ext import commands
 import yaml # Burada yaml ile veri import edicez 
             # pip install yaml
@@ -18,15 +16,19 @@ def load_bot_data(path="Reqs//bot_adj.yaml"):
 DATA = load_bot_data()
 bot_token = DATA['token'] # Assign bot token
 bot_prefix = DATA['prefix'] # Assign bot prefix
-main_channel_id = DATA['main-channel']
+main_channel_id = int(DATA['main-channel'])
 
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 Bot = commands.Bot(bot_prefix, intents=intents) # Declare prefix from yaml file
 
+def prettify(text):
+    return "```"+text+"```"
+
 # Initial Command
 @Bot.event
 async def on_ready():
-    await channel.send("I woke up")
+    print("Bot is online now")
+    await Bot.get_channel(main_channel_id).send(prettify("bot is online"))
 
 @Bot.event
 async def on_member_join(member):
