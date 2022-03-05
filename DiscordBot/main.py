@@ -57,6 +57,7 @@ async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount)
     await ctx.send(f"I have deleted {amount} messages.")
 
+# general function
 @Bot.command()
 async def run(ctx, *args):
     
