@@ -1,2 +1,2 @@
 def prettify(text):
-    return "```"+text+"```"
+    return "```"+str(text)+"```"

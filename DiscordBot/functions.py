@@ -11,3 +11,9 @@ class Game:
         coin = ["head", "tail"]
         selected = coin[randint(0,2)]
         return selected
+    
+    @staticmethod
+    def give_lane():
+        lane=["top","jungle","mid","adc","support"]
+        selected=lane[randint(0,len(lane))]
+        return selected
