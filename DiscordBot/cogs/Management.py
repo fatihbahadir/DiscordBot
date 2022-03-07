@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
-from DiscordBot.Utils.util import prettify
+from Utils.util import prettify
 
-class Manager(commands.Cog):
+class Management(commands.Cog, name="Management Commands"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -33,4 +33,4 @@ class Manager(commands.Cog):
                 return
 
 def setup(bot):
-    bot.add_cog(commands(bot))
+    bot.add_cog(Management(bot))

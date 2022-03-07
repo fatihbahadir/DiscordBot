@@ -57,6 +57,7 @@ async def ping(ctx):
     await ctx.send(prettify(f'Pong! In {round(Bot.latency * 1000)}ms'))
 
 @Bot.command()
+@commands.has_role("tenkstu")
 async def clear(ctx, amount=5):
     await ctx.channel.purge(limit=amount+1)
     message = await ctx.send(prettify(f"I have deleted {amount} messages.")) 
@@ -91,23 +92,6 @@ async def repeat(ctx,times : int,content="repeating"):
         await ctx.send(content) 
 
 @Bot.command()
-async def sum(ctx, numOne: int, numTwo: int):
-    await ctx.send(prettify(f"{numOne} + {numTwo} = {numOne + numTwo}"))
-
-@Bot.command()
-async def multiply(ctx, numOne: int, numTwo: int):
-    await ctx.send(prettify(f"{numOne} * {numTwo} = {numOne * numTwo}"))
-
-@Bot.command()
-async def substract(ctx, numOne: int, numTwo: int):
-    await ctx.send(prettify(f"{numOne} - {numTwo} = {numOne - numTwo}"))
-
-@Bot.command()
-async def divide(ctx, numOne: float, numTwo: float):
-    remainder=numOne%numTwo
-    await ctx.send(prettify(f"{numOne} / {numTwo} = {numOne / numTwo}"))
-
-@Bot.command()
 async def info(ctx):
     embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
     embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
@@ -115,7 +99,6 @@ async def info(ctx):
     embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
     embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
     await ctx.send(embed=embed)
-    
 
 @Bot.command()
 async def load(ctx, extention):
@@ -127,6 +110,9 @@ async def unload(ctx, extention):
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py") and filename != "__init__.py":
-        Bot.load_extension(f"cogs.{filename[:-3]}")
+        try:
+            Bot.load_extension(f"cogs.{filename[:-3]}")
+        except Exception as e:
+            print(e)
 
 Bot.run(bot_token)

@@ -1,9 +1,27 @@
 import discord
 from discord.ext import commands
 import datetime
-from DiscordBot.Utils.util import prettify
+from Utils.util import prettify
 
-class Commands(commands.Cog):
+class Calc:
+
+    @staticmethod
+    def sum(num1, num2):
+        return num1 + num2
+    
+    @staticmethod
+    def subs(num1, num2):
+        return num1 - num2
+
+    @staticmethod
+    def mult(num1, num2):
+        return num1 * num2
+
+    @staticmethod
+    def div(num1, num2):
+        return num1 / num2
+
+class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -16,6 +34,9 @@ class Commands(commands.Cog):
         x=datetime.datetime.now()
         await ctx.send(prettify(x))
 
+    @commands.command()
+    async def calc(ctx, *args):
+        print(args)
 
 def setup(bot):
-    bot.add_cog(Commands(bot))
+    bot.add_cog(General(bot))
