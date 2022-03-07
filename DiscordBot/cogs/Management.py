@@ -39,6 +39,6 @@ class Management(commands.Cog, name="Management Commands"):
     async def giverole(self, ctx, user: discord.Member, *, role: discord.Role):
         await user.add_roles(role)
         await ctx.send(prettify(f"{ctx.author.name} gives the {role.name} role , to {user.name}"))
-
+    
 def setup(bot):
     bot.add_cog(Management(bot))
