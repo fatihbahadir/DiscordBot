@@ -43,10 +43,12 @@ async def on_member_remove(member):
 @Bot.command()
 async def load(ctx, extention):
     Bot.load_extension(f"cogs.{extention}")
+    await ctx.send(f"{extention} has loaded succesfully! ✔️")
 
 @Bot.command()
 async def unload(ctx, extention):
     Bot.unload_extension(f"cogs.{extention}")
+    await ctx.send(f"{extention} has unloaded succesfully! ❌")
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py") and filename != "__init__.py":
