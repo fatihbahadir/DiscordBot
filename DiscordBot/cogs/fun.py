@@ -45,7 +45,7 @@ class Fun(commands.Cog,name="Fun Commands"):
                 result = method()
                 await ctx.send(prettify(result))
             else:
-                await ctx.send("")
+                await ctx.send(prettify(f"There is no game such that {game_type} "))
 
 def setup(bot):
     bot.add_cog(Fun(bot))
