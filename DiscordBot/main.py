@@ -31,6 +31,7 @@ async def on_ready():
 @Bot.event
 async def on_member_join(member):
     channel = discord.utils.get(member.guild.text_channels, name="welcome")
+    await member.add_roles(member.guild.get_role(949767411928801381))
     await channel.send(prettify(f"{member.display_name} has joined us.Welcome to our server."))
     print(f"{member} has joined to the server!")
 

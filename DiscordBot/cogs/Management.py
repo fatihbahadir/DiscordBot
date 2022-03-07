@@ -55,5 +55,20 @@ class Management(commands.Cog, name="Management Commands"):
         await message.delete()
         await asyncio.sleep(4)
 
+    @commands.command()
+    @commands.has_role(REQ_ROLE)
+    async def mute(self, ctx, user : discord.Member, duration = 10,*, unit = None):
+        roleobject = discord.utils.get(ctx.message.guild.roles, id=950509386193854465)
+        await ctx.send(f":white_check_mark: Muted {user} for {duration}{unit}")
+        await user.add_roles(roleobject)
+        if unit == "s":
+            wait = 1 * duration
+            await asyncio.sleep(wait)
+        elif unit == "m":
+            wait = 60 * duration
+            await asyncio.sleep(wait)
+        await user.remove_roles(roleobject)
+        await ctx.send(f":white_check_mark: {user} was unmuted")   
+
 def setup(bot):
     bot.add_cog(Management(bot))
