@@ -86,6 +86,7 @@ class Fun(commands.Cog,name="Fun Commands"):
             pswrd+=indicators[randint(0,len(indicators)-1)]
         user = await self.bot.fetch_user(ctx.message.author.id)
         await user.send(prettify("You new password: "+pswrd))
+        await ctx.send(prettify(f"{ctx.message.author.display_name} created a new password!."))
 
 def setup(bot):
     bot.add_cog(Fun(bot))
