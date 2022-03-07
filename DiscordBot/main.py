@@ -6,7 +6,8 @@ import yaml # Burada yaml ile veri import edicez
             # pip install yaml
 from functions import Game
 import asyncio
-
+import random
+import datetime
 
 # Load Bot Data
 def load_bot_data(path="Reqs//bot_adj.yaml"):
@@ -105,5 +106,35 @@ async def unban(ctx, *, member):
 async def giverole(ctx, user: discord.Member,*,role: discord.Role):
     await user.add_roles(role)
     await ctx.send(prettify(f"{ctx.author.name} gives the {role.name} role , to {user.name}  " ))
+@Bot.command()
+async def repeat(ctx,times : int,content="repeating"):
+    for i in range(times):
+        await ctx.send(content) 
+@Bot.command()
+async def sum(ctx, numOne: int, numTwo: int):
+    await ctx.send(prettify(f"{numOne} + {numTwo} = {numOne + numTwo}"))
+@Bot.command()
+async def multiply(ctx, numOne: int, numTwo: int):
+    await ctx.send(prettify(f"{numOne} * {numTwo} = {numOne * numTwo}"))
+@Bot.command()
+async def substract(ctx, numOne: int, numTwo: int):
+    await ctx.send(prettify(f"{numOne} - {numTwo} = {numOne - numTwo}"))
+@Bot.command()
+async def divide(ctx, numOne: float, numTwo: float):
+    remainder=numOne%numTwo
+    await ctx.send(prettify(f"{numOne} / {numTwo} = {numOne / numTwo}"))
+@Bot.command()
+async def info(ctx):
+    embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
+    embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
+    embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
+    embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
+    embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
+    await ctx.send(embed=embed)
+@Bot.command()
+async def time(ctx):
+    x=datetime.datetime.now()
+    await ctx.send(prettify(x))
+    
 
 Bot.run(bot_token)
