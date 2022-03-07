@@ -74,6 +74,7 @@ class Fun(commands.Cog,name="Fun Commands"):
     async def createlist(self,ctx,title : str,*args):
         """ Create a list """
         await ctx.send(create_list(title,args))
+    
     @commands.command()
     async def password(self, ctx, nbytes: int = 18):
         alphabet="abcdefghijklmnoprstuvyzxwABCDEFGHIJKLMNOPRSTUVYZXW"
@@ -82,6 +83,8 @@ class Fun(commands.Cog,name="Fun Commands"):
         pswrd=""
         for _ in range(nbytes):
             pswrd+=indicators[randint(0,len(indicators)-1)]
-        
+        user = await self.bot.fetch_user(ctx.message.author.id)
+        await user.send(prettify("You new password: "+pswrd))
+
 def setup(bot):
     bot.add_cog(Fun(bot))
