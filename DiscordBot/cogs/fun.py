@@ -72,6 +72,7 @@ class Fun(commands.Cog,name="Fun Commands"):
     
     @commands.command()
     async def createlist(self,ctx,title : str,*args):
+        """ Create a list """
         await ctx.send(create_list(title,args))
 
 
