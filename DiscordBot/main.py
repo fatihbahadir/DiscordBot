@@ -26,7 +26,7 @@ Bot = commands.Bot(bot_prefix, intents=intents, help_command=None) # Declare pre
 @Bot.event
 async def on_ready():
     print("Bot is online now")
-    await Bot.get_channel(main_channel_id).send(prettify("bot is online"))
+    await Bot.get_channel(main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
 
 @Bot.event
 async def on_member_join(member):

@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 import datetime
-from Utils.util import prettify
+from Utils.util import prettify, create_list
+import os
 
 class Calc:
 
@@ -53,8 +54,11 @@ class General(commands.Cog, name="General Commands"):
 
     @commands.command()
     async def ping(self, ctx):
-        """ Do a ping test """
-        await ctx.send(prettify(f'Pong! In {round(self.bot.latency * 1000)}ms'))
+        await ctx.send(prettify(f'Pong! 🏓 In {round(self.bot.latency * 1000)}ms'))
+
+    @commands.command()
+    async def modules(self, ctx):
+        modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
 
 def setup(bot):
     bot.add_cog(General(bot))
