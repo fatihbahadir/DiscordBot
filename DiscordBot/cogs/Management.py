@@ -2,24 +2,26 @@ import discord
 from discord.ext import commands
 from Utils.util import prettify
 
+req_role = "tenkstu"
+
 class Management(commands.Cog, name="Management Commands"):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    @commands.has_role("tenkstu")
+    @commands.has_role(req_role)
     async def kick(ctx, member: discord.Member, *args, reason="Yok"):
         await member.kick(reason=reason)
         await ctx.send(prettify(f"The {member.display_name} kicked by me."))
 
     @commands.command()
-    @commands.has_role("tenkstu")
+    @commands.has_role(req_role)
     async def ban(ctx, member: discord.Member, *args, reason="Yok"):
         await member.ban(reason=reason)
         await ctx.send(prettify(f"The {member.display_name} banned by me."))
 
     @commands.command()
-    @commands.has_role("tenkstu")
+    @commands.has_role(req_role)
     async def unban(ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split("#")
