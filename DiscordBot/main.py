@@ -20,7 +20,7 @@ bot_prefix = DATA['prefix'] # Assign bot prefix
 main_channel_id = int(DATA['main-channel'])
 
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
-Bot = commands.Bot(bot_prefix, intents=intents) # Declare prefix from yaml file
+Bot = commands.Bot(bot_prefix, intents=intents, help_command=None) # Declare prefix from yaml file
 
 # Initial Command
 @Bot.event
