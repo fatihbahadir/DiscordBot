@@ -1,3 +1,5 @@
+from distutils import extension
+from unittest import async_case
 from Utils.util import prettify
 import discord
 from discord import channel
@@ -6,7 +8,7 @@ import yaml # Burada yaml ile veri import edicez
             # pip install yaml
 from functions import Game
 import asyncio
-import random
+import os
 import datetime
 
 # Load Bot Data
@@ -78,51 +80,33 @@ async def run(ctx, *args):
     else:
         await ctx.send(prettify("Currently given run command not required. You can contact with log command (!btw log <text>) to create information post."))
 
-@Bot.command()
-@commands.has_role("tenkstu")
-async def kick(ctx, member: discord.Member, *args, reason="Yok"):
-    await member.kick(reason=reason)
-    await ctx.send(prettify(f"The {member.display_name} kicked by me."))
-
-@Bot.command()
-@commands.has_role("tenkstu")
-async def ban(ctx, member: discord.Member, *args, reason="Yok"):
-    await member.ban(reason=reason)
-    await ctx.send(prettify(f"The {member.display_name} banned by me."))
-
-@Bot.command()
-async def unban(ctx, *, member):
-    banned_users = await ctx.guild.bans()
-    member_name, member_discriminator = member.split("#")
-
-    for bans in banned_users:
-        user = bans.user
-
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.send(prettify(f'{user.display_name} has no longer banned'))
-            return
 @Bot.command(pass_context=True)
 async def giverole(ctx, user: discord.Member,*,role: discord.Role):
     await user.add_roles(role)
     await ctx.send(prettify(f"{ctx.author.name} gives the {role.name} role , to {user.name}  " ))
+
 @Bot.command()
 async def repeat(ctx,times : int,content="repeating"):
     for i in range(times):
         await ctx.send(content) 
+
 @Bot.command()
 async def sum(ctx, numOne: int, numTwo: int):
     await ctx.send(prettify(f"{numOne} + {numTwo} = {numOne + numTwo}"))
+
 @Bot.command()
 async def multiply(ctx, numOne: int, numTwo: int):
     await ctx.send(prettify(f"{numOne} * {numTwo} = {numOne * numTwo}"))
+
 @Bot.command()
 async def substract(ctx, numOne: int, numTwo: int):
     await ctx.send(prettify(f"{numOne} - {numTwo} = {numOne - numTwo}"))
+
 @Bot.command()
 async def divide(ctx, numOne: float, numTwo: float):
     remainder=numOne%numTwo
     await ctx.send(prettify(f"{numOne} / {numTwo} = {numOne / numTwo}"))
+
 @Bot.command()
 async def info(ctx):
     embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
@@ -131,10 +115,18 @@ async def info(ctx):
     embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
     embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
     await ctx.send(embed=embed)
-@Bot.command()
-async def time(ctx):
-    x=datetime.datetime.now()
-    await ctx.send(prettify(x))
     
+
+@Bot.command()
+async def load(ctx, extention):
+    Bot.load_extension(f"cogs.{extention}")
+
+@Bot.command()
+async def unload(ctx, extention):
+    Bot.unload_extension(f"cogs.{extention}")
+
+for filename in os.listdir("./cogs"):
+    if filename.endswith(".py") and filename != "__init__.py":
+        Bot.load_extension(f"cogs.{filename[:-3]}")
 
 Bot.run(bot_token)
