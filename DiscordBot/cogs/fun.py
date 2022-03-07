@@ -10,7 +10,7 @@ class Fun(commands.Cog,name="Fun Commands"):
     @commands.command()
     async def repeat(self,ctx,times : int,content="repeating"):
         for i in range(times):
-            await ctx.send(content)
+            await ctx.send(prettify(content))
 
 class Game:
 
@@ -29,3 +29,6 @@ class Game:
         lane=["top","jungle","mid","adc","support"]
         selected=lane[randint(0,len(lane))]
         return selected
+
+def setup(bot):
+    bot.add_cog(Fun(bot))
