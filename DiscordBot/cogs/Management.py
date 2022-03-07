@@ -12,18 +12,21 @@ class Management(commands.Cog, name="Management Commands"):
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def kick(self, ctx, member: discord.Member, *args, reason="Yok"):
+        """ Kick someone from the server """
         await member.kick(reason=reason)
         await ctx.send(prettify(f"The {member.display_name} kicked by me."))
 
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def ban(self, ctx, member: discord.Member, *args, reason="Yok"):
+        """ Ban someone from the server """
         await member.ban(reason=reason)
         await ctx.send(prettify(f"The {member.display_name} banned by me."))
 
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def unban(self, ctx, *, member):
+        """ Unban someone from the server """
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split("#")
 
@@ -38,12 +41,14 @@ class Management(commands.Cog, name="Management Commands"):
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def giverole(self, ctx, user: discord.Member, *, role: discord.Role):
+        """ Give a role to someone """
         await user.add_roles(role)
         await ctx.send(prettify(f"{ctx.author.name} gives the {role.name} role , to {user.name}"))
 
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def clear(self, ctx, amount=5):
+        """ Delete as many messages as you want"""
         await ctx.channel.purge(limit=amount+1)
         message = await ctx.send(prettify(f"I have deleted {amount} messages.")) 
         await asyncio.sleep(3)  

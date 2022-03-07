@@ -71,7 +71,7 @@ class Fun(commands.Cog,name="Fun Commands"):
         await ctx.send(prettify(f"{ctx.author.name} has paid their respect {reason}{random.choice(hearts)}"))
     
     @commands.command()
-    async def create(self,ctx,title : str,*args):
+    async def createlist(self,ctx,title : str,*args):
         await ctx.send(create_list(title,args))
 
 
