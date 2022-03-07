@@ -1,6 +1,7 @@
 import discord
-from discord.ext import commandsi
+from discord.ext import commands
 from Utils.util import prettify
+from random import randint
 
 class Fun(commands.Cog,name="Fun Commands"):
     def __init__(self,bot):
