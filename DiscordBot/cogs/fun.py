@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import bot
 from Utils.util import prettify,create_list
 from random import randint
 import random
@@ -74,14 +75,6 @@ class Fun(commands.Cog,name="Fun Commands"):
     async def createlist(self,ctx,title : str,*args):
         """ Create a list """
         await ctx.send(create_list(title,args))
-    @commands.command()
-    async def password(self, ctx, nbytes: int = 18):
-        alphabet="abcdefghijklmnoprstuvyzxwABCDEFGHIJKLMNOPRSTUVYZXW"
-        numbers="0123456789"
-        indicators=alphabet+numbers
-        pswrd=""
-        for _ in range(nbytes):
-            pswrd+=indicators[randint(0,len(indicators)-1)]
-        
+    
 def setup(bot):
     bot.add_cog(Fun(bot))
