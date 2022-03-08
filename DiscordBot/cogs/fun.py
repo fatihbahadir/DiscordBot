@@ -88,6 +88,93 @@ class Fun(commands.Cog,name="Fun Commands"):
         user = await self.bot.fetch_user(ctx.message.author.id)
         await user.send(prettify("You new password: "+pswrd))
         await ctx.send(prettify(f"Hey {ctx.message.author.display_name} I send you a private message about your password request."))
+    
+    @commands.command()
+    async def adamasmaca(self,ctx):
+        pics = ["""
+            +---+
+            |   |
+                |
+                |
+                |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+                |
+                |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+            |   |
+                |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+           /|   |
+                |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+           /|\  |
+                |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+           /|\  |
+           /    |
+                |
+            =========""","""
+            +---+
+            |   |
+            O   |
+           /|\  |
+           / \  |
+                |
+            ========="""]
+        while True:
+            await ctx.send(("-" * 30) + "\nHangman Game\n" + ("-" * 30))
+    
+            word = random.choice(["windows", "python", "terminal", "ubuntu"])
+            step = 0
+            letters = []
+   
+            while True:
+                (pics[step])
+            
+                for i, char in enumerate(word):
+                    print(char if i in letters else "_"),
+                
+                answer = raw_input("\nAnswer: ")
+            
+                if answer == word:
+                    print("You win!\n\n")
+                    break
+                else:
+                    while True:
+                        rand = random.randint(0, len(word))
+                        if not rand in letters:
+                            letters.append(rand)
+                            break
+                
+                    step += 1
+            
+                if step >= len(pics):
+                    print("You lose!\n\n")
+                    break
+            
+                if not "y" == raw_input("Play again (y/n): "):
+                    break
 
+    
 def setup(bot):
     bot.add_cog(Fun(bot))
