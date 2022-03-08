@@ -18,7 +18,7 @@ class Events(commands.Cog):
         print("Bot is online now")
         await self.bot.get_channel(self.main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
 
-    @commands.Cog.listener(9)
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         channel = discord.utils.get(member.guild.text_channels, name="welcome")
         await member.add_roles(member.guild.get_role(self.new_role))
@@ -32,4 +32,4 @@ class Events(commands.Cog):
         print(f"{member} has left the server!")
 
 def setup(bot):
-    bot.add_cog(Events())
+    bot.add_cog(Events(bot))
