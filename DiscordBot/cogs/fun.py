@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import bot
+from discord.ext.commands.core import command
 from Utils.util import prettify,create_list
 from random import randint
 import random
@@ -90,91 +91,19 @@ class Fun(commands.Cog,name="Fun Commands"):
         await ctx.send(prettify(f"Hey {ctx.message.author.display_name} I send you a private message about your password request."))
     
     @commands.command()
-    async def adamasmaca(self,ctx):
-        pics = ["""
-            +---+
-            |   |
-                |
-                |
-                |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-                |
-                |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-            |   |
-                |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-           /|   |
-                |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-           /|\  |
-                |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-           /|\  |
-           /    |
-                |
-            =========""","""
-            +---+
-            |   |
-            O   |
-           /|\  |
-           / \  |
-                |
-            ========="""]
-        while True:
-            await ctx.send(("-" * 30) + "\nHangman Game\n" + ("-" * 30))
-    
-            word = random.choice(["windows", "python", "terminal", "ubuntu"])
-            step = 0
-            letters = []
-   
-            while True:
-                (pics[step])
-            
-                for i, char in enumerate(word):
-                    print(char if i in letters else "_"),
-                
-                answer = raw_input("\nAnswer: ")
-            
-                if answer == word:
-                    print("You win!\n\n")
-                    break
-                else:
-                    while True:
-                        rand = random.randint(0, len(word))
-                        if not rand in letters:
-                            letters.append(rand)
-                            break
-                
-                    step += 1
-            
-                if step >= len(pics):
-                    print("You lose!\n\n")
-                    break
-            
-                if not "y" == raw_input("Play again (y/n): "):
-                    break
+    async def guess(self,ctx):
+        computer = random.randint(1, 10)
+        await ctx.send(prettify('Guess my number'))
 
-    
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel and int(msg.content) in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        msg = await self.bot.wait_for("message", check=check)
+
+        if int(msg.content) == computer:
+            await ctx.send(prettify("Correct"))
+        else:
+            await ctx.send(prettify(f"Nope it was {computer}"))
+        
 def setup(bot):
     bot.add_cog(Fun(bot))
