@@ -13,21 +13,6 @@ main_channel_id = int(DATA['main-channel']) # Assign the main channel id
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 Bot = commands.Bot(bot_prefix, intents=intents, help_command=CustomHelpCommand()) # Declare prefix from yaml file
 
-
-
-@Bot.event
-async def on_member_join(member):
-    channel = discord.utils.get(member.guild.text_channels, name="welcome")
-    await member.add_roles(member.guild.get_role(949767411928801381))
-    await channel.send(prettify(f"{member.display_name} has joined us.Welcome to our server."))
-    print(f"{member} has joined to the server!")
-
-@Bot.event
-async def on_member_remove(member):
-    channel=discord.utils.get(member.guild.text_channels, name="those-who-left-us")
-    await channel.send(prettify(f"{member.display_name} has left us.Good bye"))
-    print(f"{member} has left the server!")
-
 @Bot.command()
 async def load(ctx, extention):
     Bot.load_extension(f"cogs.{extention}")
