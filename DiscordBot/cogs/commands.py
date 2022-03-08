@@ -3,7 +3,7 @@ from discord.ext import commands
 import datetime
 from Utils.util import prettify, create_list
 import os
-   
+
 class Calc:
 
     @staticmethod
@@ -59,12 +59,7 @@ class General(commands.Cog, name="General Commands"):
     @commands.command()
     async def modules(self, ctx):
         modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
-    @commands.command
-    async def help(self,ctx):
-        pass
-
-
-
+    
 
 def setup(bot):
     bot.add_cog(General(bot))
