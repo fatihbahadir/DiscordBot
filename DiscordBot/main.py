@@ -14,13 +14,34 @@ Bot = commands.Bot(bot_prefix, intents=intents, help_command=None) # Declare pre
 
 @Bot.command()
 async def load(ctx, extention):
-    Bot.load_extension(f"cogs.{extention}")
-    await ctx.send(f"{extention} has loaded succesfully! ✔️")
+    try:
+        Bot.load_extension(f"cogs.{extention}")
+        await ctx.send(f"{extention} has loaded succesfully! ✔️")
+    except commands.ExtensionAlreadyLoaded:
+        await ctx.send(prettify(f"Module has already loaded!"))
+    except Exception as e:
+        print(e)
+        await ctx.send(prettify(f"No module named {extention}"))
 
 @Bot.command()
 async def unload(ctx, extention):
-    Bot.unload_extension(f"cogs.{extention}")
-    await ctx.send(f"{extention} has unloaded succesfully! ❌")
+    try:
+        Bot.unload_extension(f"cogs.{extention}")
+        await ctx.send(f"{extention} has unloaded succesfully! ❌")
+    except commands.ExtensionNotFound:
+        await ctx.send(prettify(f"No module named as {extention}"))
+
+@Bot.command()
+async def cog_switch(ctx, cog_name):
+    try:
+        Bot.load_extension(f"cogs.{cog_name}")
+    except commands.ExtensionAlreadyLoaded:
+        await ctx.send(prettify("Cog is loaded"))
+    except commands.ExtensionNotFound:
+        await ctx.send(prettify("Cog not found"))
+    else:
+        Bot.unload_extension(f"cogs.{cog_name}")
+        await ctx.send(prettify("Cog is unloaded"))
 
 for filename in os.listdir("./cogs"):
     if filename.endswith(".py") and filename != "__init__.py":

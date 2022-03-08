@@ -1,9 +1,7 @@
-from venv import create
 import discord
 from discord.ext import commands
-import datetime
-from Utils.util import prettify, create_list, load_bot_data
-import os
+from datetime import datetime
+from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands
 
 class Calc:
 
@@ -30,25 +28,22 @@ class General(commands.Cog, name="General Commands"):
         DATA = load_bot_data()
         self.prefix = DATA['prefix']
 
-    @commands.command()
-    async def selamCog(self, ctx):
-        """ Say hello to Cog """
-        await ctx.send(prettify("Merhaba Ben bu kodu Cogs ile çalıştırıyorum"))
+    @commands.command(description="Return hello to user")
+    async def Hello(self, ctx):
+        await ctx.send(prettify("Hello from BTW bot!"))
 
-    @commands.command()
+    @commands.command(description="Demonstrate what time it is currently")
     async def time(self, ctx):
-        """ Tells you what time is it"""
-        x=datetime.datetime.now()
-        await ctx.send(prettify(x))
+        now = datetime.now()
+        date_time = now.strftime("%m/%d/%Y, %H:%M, %A")
+        await ctx.send(prettify(date_time))
 
-    @commands.command()
+    @commands.command(description="Basic calculator")
     async def calc(self, ctx, *args):
-        """ Some basic calculations """
         print(args)
 
-    @commands.command()
+    @commands.command(description="Display general info about user")
     async def info(self, ctx):
-        """ See the server info """
         embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
         embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
         embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
@@ -56,32 +51,26 @@ class General(commands.Cog, name="General Commands"):
         embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(description="Shows bot's ping in ms type")
     async def ping(self, ctx):
         await ctx.send(prettify(f'Pong! 🏓 In {round(self.bot.latency * 1000)}ms'))
-
-    @commands.command()
-    async def modules(self, ctx):
-        modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
   
-    @commands.command()
+    @commands.command(description="Create this text")
     async def help(self, ctx):
-        '''
-        cogs_desc = ''
-        for cog in self.bot.cogs:
-            cogs_desc += f'`{cog}` {self.bot.cogs[cog].__doc__}\n'
 
-        commands_desc = ''
-        for command in self.bot.walk_commands():
-            if not command.cog_name and not command.hidden:
-                commands_desc += f'{command.name} - {command.help}\n'
+        random_color = get_random_color()
+        emb = discord.Embed(title="Commands", description=f"**{self.prefix}help** command demostrate all avaliable commands.\nGeneral pattern => **{self.prefix}<command>**", color=random_color)
 
-        await ctx.send(prettify(commands_desc))
-        '''
         for cog_name in self.bot.cogs:
             cog = self.bot.get_cog(cog_name)
-            cog_commands = [c.name for c in cog.get_commands()]
-            await ctx.send(create_list(cog_name, cog_commands))
+            cog_commands = [(c.name,c.description) for c in cog.get_commands()]
+            if cog_commands:
+                commands_text = adjust_commands(cog_commands)
+                emb.add_field(name=cog_name.title(), value=commands_text, inline=False)
+
+        emb.set_footer(text="Information requested by: {}".format(ctx.author.display_name))
+
+        await ctx.send(embed = emb)
 
 def setup(bot):
     bot.add_cog(General(bot))
