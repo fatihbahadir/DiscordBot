@@ -1,7 +1,8 @@
+from venv import create
 import discord
 from discord.ext import commands
 import datetime
-from Utils.util import prettify, create_list
+from Utils.util import prettify, create_list, load_bot_data
 import os
 
 class Calc:
@@ -25,6 +26,9 @@ class Calc:
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
+
+        DATA = load_bot_data()
+        self.prefix = DATA['prefix']
 
     @commands.command()
     async def selamCog(self, ctx):
@@ -60,5 +64,24 @@ class General(commands.Cog, name="General Commands"):
     async def modules(self, ctx):
         modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
   
+    @commands.command()
+    async def help(self, ctx):
+        '''
+        cogs_desc = ''
+        for cog in self.bot.cogs:
+            cogs_desc += f'`{cog}` {self.bot.cogs[cog].__doc__}\n'
+
+        commands_desc = ''
+        for command in self.bot.walk_commands():
+            if not command.cog_name and not command.hidden:
+                commands_desc += f'{command.name} - {command.help}\n'
+
+        await ctx.send(prettify(commands_desc))
+        '''
+        for cog_name in self.bot.cogs:
+            cog = self.bot.get_cog(cog_name)
+            cog_commands = [c.name for c in cog.get_commands()]
+            await ctx.send(create_list(cog_name, cog_commands))
+
 def setup(bot):
     bot.add_cog(General(bot))
