@@ -58,6 +58,7 @@ class Management(commands.Cog, name="Management Commands"):
     @commands.command()
     @commands.has_role(REQ_ROLE)
     async def mute(self, ctx, user : discord.Member, duration = 10,*, unit = None):
+        """ Mute someone """
         roleobject = discord.utils.get(ctx.message.guild.roles, id=950509386193854465)
         await ctx.send(f":white_check_mark: Muted {user} for {duration}{unit}")
         await user.add_roles(roleobject)
