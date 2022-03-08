@@ -1,32 +1,18 @@
-from Utils.util import prettify
+from Utils.util import prettify, load_bot_data
 import discord
 from discord.ext import commands
-import yaml
 import os
-
-# Load Bot Data
-def load_bot_data(path="Reqs//bot_adj.yaml"):
-    with open(path, "r") as stream: # Read YAML data
-        try:
-            data = yaml.safe_load(stream) # Convert YAML to list in array
-            return data
-        except yaml.YAMLError as exc:
-            raise Exception("ERROR: "+exc)
 
 # Initial Data Assignment
 DATA = load_bot_data()
 bot_token = DATA['token'] # Assign bot token
 bot_prefix = DATA['prefix'] # Assign bot prefix
-main_channel_id = int(DATA['main-channel'])
+main_channel_id = int(DATA['main-channel']) # Assign the main channel id
 
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 Bot = commands.Bot(bot_prefix, intents=intents, help_command=None) # Declare prefix from yaml file
 
-# Initial Command
-@Bot.event
-async def on_ready():
-    print("Bot is online now")
-    await Bot.get_channel(main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
+
 
 @Bot.event
 async def on_member_join(member):

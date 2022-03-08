@@ -1,3 +1,13 @@
+import yaml
+
+def load_bot_data(path="Reqs//bot_adj.yaml"):
+    with open(path, "r") as stream: # Read YAML data
+        try:
+            data = yaml.safe_load(stream) # Convert YAML to list in array
+            return data
+        except yaml.YAMLError as exc:
+            raise Exception("ERROR: "+exc)
+
 def prettify(text):
     return "```"+str(text)+"```"
 
