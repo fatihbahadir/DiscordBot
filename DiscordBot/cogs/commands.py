@@ -1,6 +1,9 @@
 import discord
+from discord import client
+from discord.colour import Color
 from discord.ext import commands
 import datetime
+from DiscordBot.main import Bot
 from Utils.util import prettify, create_list
 import os
 
@@ -59,7 +62,13 @@ class General(commands.Cog, name="General Commands"):
     @commands.command()
     async def modules(self, ctx):
         modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
-    
+    @commands.bot.group(invoke_without_command=True)
+    async def help(self,ctx):
+        em= discord.Embed(title="Help", description="Use help <command> for extended information on a command.", color= ctx.author.color)
+        
+        em.add_field(name="Moderation",value="Kick,ban,warn")
+        em.add_field(name="Fun", value="8ball,reverse")
 
+        await ctx.send(embed=em)
 def setup(bot):
     bot.add_cog(General(bot))
