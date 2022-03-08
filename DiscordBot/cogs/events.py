@@ -5,6 +5,7 @@ from Utils.util import prettify, load_bot_data
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.number = 0
         
         # Assign general variables
         DATA = load_bot_data()

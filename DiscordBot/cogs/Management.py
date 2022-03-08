@@ -69,7 +69,7 @@ class Management(commands.Cog, name="Management Commands"):
             wait = 60 * duration
             await asyncio.sleep(wait)
         await user.remove_roles(roleobject)
-        await ctx.send(f":white_check_mark: {user} was unmuted")   
+        await ctx.send(f":white_check_mark: {user} was unmuted")
 
 def setup(bot):
     bot.add_cog(Management(bot))
