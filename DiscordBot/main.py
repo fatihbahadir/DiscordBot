@@ -1,3 +1,4 @@
+from DiscordBot.cogs.commands import CustomHelpCommand
 from Utils.util import prettify, load_bot_data
 import discord
 from discord.ext import commands
@@ -10,7 +11,7 @@ bot_prefix = DATA['prefix'] # Assign bot prefix
 main_channel_id = int(DATA['main-channel']) # Assign the main channel id
 
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
-Bot = commands.Bot(bot_prefix, intents=intents, help_command=None) # Declare prefix from yaml file
+Bot = commands.Bot(bot_prefix, intents=intents, help_command=CustomHelpCommand()) # Declare prefix from yaml file
 
 
 

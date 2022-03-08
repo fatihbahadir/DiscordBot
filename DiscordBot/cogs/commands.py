@@ -4,6 +4,25 @@ import datetime
 from Utils.util import prettify, create_list
 import os
 
+class CustomHelpCommand(commands.HelpCommand):
+
+    def __init__(self):
+        super().__init__()
+    
+    async def send_bot_help(self, mapping):
+        return await super().send_bot_help(mapping)
+    
+    async def send_cog_help(self, cog):
+        return await super().send_cog_help(cog)
+    
+    async def send_group_help(self, group):
+        return await super().send_group_help(group)
+    
+    async def send_command_help(self, command):
+        return await super().send_command_help(command)
+        
+    
+
 class Calc:
 
     @staticmethod
@@ -59,6 +78,9 @@ class General(commands.Cog, name="General Commands"):
     @commands.command()
     async def modules(self, ctx):
         modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
+    
+
+
 
 def setup(bot):
     bot.add_cog(General(bot))
