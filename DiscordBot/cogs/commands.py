@@ -59,7 +59,10 @@ class General(commands.Cog, name="General Commands"):
     @commands.command()
     async def modules(self, ctx):
         modules = [i[:-3] for i in os.listdir("./cogs") if not i.startswith("__") and i.endswith("py")]
-    
+    @commands.command
+    async def help(self,ctx):
+        pass
+
 
 
 
