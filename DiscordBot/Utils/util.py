@@ -1,5 +1,7 @@
 import yaml
-from random import randint, random
+from random import randint
+import requests
+from bs4 import BeautifulSoup
 
 def load_bot_data(path="Reqs//bot_adj.yaml"):
     with open(path, "r") as stream: # Read YAML data
@@ -35,3 +37,9 @@ def adjust_commands(max_lenght, cog_commands):
     pattern = "- {:<"+str(max_lenght)+"} : {}"
     commands_text = "\n".join([pattern.format(*command) for command in cog_commands])
     return "```" + commands_text + "```"
+
+def get_yt_title(url):
+    r = requests.get(url)
+    s = BeautifulSoup(r.text, "html.parser")
+    title = s.find('h1', id="video-title").text.replace("\n", "")
+    return title
