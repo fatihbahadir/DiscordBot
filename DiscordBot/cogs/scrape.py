@@ -19,7 +19,7 @@ class Scrape(commands.Cog):
         info_message = await ctx.send(prettify("Searching for videos.."))
         
         url = remove_chars(self.yt_query_url+"+".join(url_name))
-        await info_message.edit(content=prettify("General video data is gathering"))
+        await info_message.edit(content=prettify("General video data is gathering.."))
         
         video_urls = [self.yt_url+id for id in get_yt_ids(url)]
         video_datas = get_yt_title(video_urls)
