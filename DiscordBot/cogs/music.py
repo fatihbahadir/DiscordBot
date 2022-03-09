@@ -7,7 +7,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(description="Return random music according to your mood")
     async def get_music(self,ctx):
         music_type=["Emotional","Happy","Depressed","Angry","Hopeful","Sad"]
         await ctx.send(create_list("What kind of music would you like to listen to ?" ,music_type))

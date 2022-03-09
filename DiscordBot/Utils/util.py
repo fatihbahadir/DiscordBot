@@ -2,6 +2,8 @@ import yaml
 from random import randint
 import requests
 from bs4 import BeautifulSoup
+import urllib.request
+import re
 
 def load_bot_data(path="Reqs//bot_adj.yaml"):
     with open(path, "r") as stream: # Read YAML data
@@ -14,8 +16,14 @@ def load_bot_data(path="Reqs//bot_adj.yaml"):
 def prettify(text):
     return "```"+str(text)+"```"
 
-def create_list(title, items):
-    message = prettify("yaml\n "+title.upper()+"\n"+"\n".join(["- "+i for i in items]))
+def create_list(title, items, numeric=False):
+    if numeric:
+        text = "\n"+title.upper()
+        for index, item in enumerate(items, 1):
+            text += f"\n{index}) {item}"
+        message = prettify(text)
+    else:
+        message = prettify("\n "+title.upper()+"\n"+"\n".join(["- "+i for i in items]))
     return message
 
 def crete_profile(member):
@@ -38,8 +46,25 @@ def adjust_commands(max_lenght, cog_commands):
     commands_text = "\n".join([pattern.format(*command) for command in cog_commands])
     return "```" + commands_text + "```"
 
-def get_yt_title(url):
-    r = requests.get(url)
-    s = BeautifulSoup(r.text, "html.parser")
-    title = s.find('h1', id="video-title").text.replace("\n", "")
-    return title
+def get_yt_ids(url):
+    html = urllib.request.urlopen(url)
+    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())[:5]
+    return video_ids[:5]
+
+def get_yt_title(urls):
+    
+    video_data = []
+
+    for url in urls:
+        html = urllib.request.urlopen(url)
+        soup = BeautifulSoup(html, 'html.parser')
+        title = soup.title.string[:-10]
+        video_data.append((title, url))
+    
+    return video_data
+
+def remove_chars(text):
+    replace_chars = [ ('ı','i'), ('İ','I'), ('ü','u'), ('Ü','U'), ('ö','o'), ('Ö','O'), ('ç','c'), ('Ç','C'), ('ş','s'), ('Ş','S'), ('ğ','g'), ('Ğ','G') ]
+    for search, replace in replace_chars:
+        text = text.replace(search, replace)
+    return text
