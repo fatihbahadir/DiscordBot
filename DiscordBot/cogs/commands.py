@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands
+from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght
 
 class Calc:
 
@@ -65,7 +65,8 @@ class General(commands.Cog, name="General Commands"):
             cog = self.bot.get_cog(cog_name)
             cog_commands = [(c.name,c.description) for c in cog.get_commands()]
             if cog_commands:
-                commands_text = adjust_commands(cog_commands)
+                max_lenght = get_max_lenght([name[0] for name in cog_commands])
+                commands_text = adjust_commands(max_lenght, cog_commands)
                 emb.add_field(name=cog_name.title(), value=commands_text, inline=False)
 
         emb.set_footer(text="Information requested by: {}".format(ctx.author.display_name))

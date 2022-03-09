@@ -24,7 +24,14 @@ def get_random_color():
     selected_color = color_list[randint(0,len(color_list)-1)]
     return selected_color
 
-def adjust_commands(cog_commands):
-    pattern = "- {:<12} : {}"
+def get_max_lenght(names):
+    max = 0
+    for name in names:
+        if len(name) > max:
+            max = len(name)
+    return max
+
+def adjust_commands(max_lenght, cog_commands):
+    pattern = "- {:<"+str(max_lenght)+"} : {}"
     commands_text = "\n".join([pattern.format(*command) for command in cog_commands])
     return "```" + commands_text + "```"
