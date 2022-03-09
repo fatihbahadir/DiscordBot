@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord_ui
 import random
 from Utils.util import prettify
 
@@ -10,8 +9,7 @@ class Music(commands.Cog):
 
     @commands.command()
     async def get_music(self,ctx):
-        music_list = await ctx.send(prettify("What kind of music would you like to listen to ? \n -Emotinal \n -Happy \n -Depressed \n -Angry \n -Hopeful \n -Sad"))
-        await music_list.add_reaction("❌")
+        await ctx.send(prettify("What kind of music would you like to listen to ? \n -Emotinal \n -Happy \n -Depressed \n -Angry \n -Hopeful \n -Sad"))
 
         def check(msg):
             return msg.author == ctx.author and msg.channel == ctx.channel and msg.content in["Emotional","Happy","Depressed","Angry","Hopeful","Sad"]

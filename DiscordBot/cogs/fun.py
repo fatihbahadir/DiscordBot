@@ -1,8 +1,5 @@
 import discord
-from discord import message
 from discord.ext import commands
-from discord.ext.commands import bot
-from discord.ext.commands.core import command
 from Utils.util import prettify,create_list
 from random import randint
 import random
@@ -30,13 +27,11 @@ class Fun(commands.Cog,name="Fun Commands"):
 
     @commands.command()
     async def repeat(self, ctx, times : int, content="repeating"):
-        """ Repeat something as many times as you want """
         for _ in range(times):
             await ctx.send(prettify(content))
 
     @commands.command()
     async def game(self, ctx, game_type : str):
-        """ Select a game  """
 
         methods = [method for method in dir(Game) if not method.startswith("__") and not method.endswith("_")]
         
@@ -54,7 +49,6 @@ class Fun(commands.Cog,name="Fun Commands"):
 
     @commands.command()
     async def beer(self, ctx, user: discord.Member = None,  reason: commands.clean_content = ""):
-        """ Buy someone a beer """
         if not user or user.id == ctx.author.id:
             return await ctx.send(f"{ctx.author.name}: paaaarty!🎉🍺")
         if user.id == self.bot.user.id:
@@ -68,14 +62,12 @@ class Fun(commands.Cog,name="Fun Commands"):
 
     @commands.command()
     async def f(self,ctx, *, text: commands.clean_content = None):
-        """ Press F to pay respect """
         hearts = ["❤", "💛", "💚", "💙", "💜"]
         reason = f"for {text} " if text else ""
         await ctx.send(prettify(f"{ctx.author.name} has paid their respect {reason}{random.choice(hearts)}"))
     
     @commands.command()
     async def createlist(self,ctx,title : str,*args):
-        """ Create a list """
         await ctx.send(create_list(title,args))
     
     @commands.command()
