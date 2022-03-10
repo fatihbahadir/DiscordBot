@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 from Utils.util import prettify, load_bot_data
 
 class Events(commands.Cog):
@@ -31,6 +32,13 @@ class Events(commands.Cog):
         channel=discord.utils.get(member.guild.text_channels, name="those-who-left-us")
         await channel.send(prettify(f"{member.display_name} has left us.Good bye"))
         print(f"{member} has left the server!")
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, CommandNotFound):
+            await ctx.send(prettify(f"Command not found: '{str(ctx.message.content)}'"))
+            return
+        raise error
 
 def setup(bot):
     bot.add_cog(Events(bot))
