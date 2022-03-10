@@ -75,3 +75,14 @@ def get_channels(bot):
         for channel in guild.text_channels:
             text_channel_list.append((channel.name, channel.id))
     return text_channel_list
+
+def convert_time(date):
+    if date > 3600000:
+        result = str(round(date/3600000 ,1))+"h"
+    elif date > 60000:
+        result = str(round(date/60000,1))+"m"
+    elif date > 1000:
+        result = str(round(date/1000 ,1))+"s"
+    else:
+        result = str(round(date, 1))+"ms"
+    return result

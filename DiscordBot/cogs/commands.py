@@ -1,13 +1,16 @@
 import asyncio
+from errno import EALREADY
 import discord
 from discord.ext import commands
 from datetime import datetime
-from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list
+from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list, convert_time
+import time
 
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
         self.afk_list = []
+        self.afk_meta = {}
 
         DATA = load_bot_data()
         self.prefix = DATA['prefix']
@@ -81,6 +84,7 @@ class General(commands.Cog, name="General Commands"):
             user_id = ctx.author.id
             if user_id not in self.afk_list:    
                 self.afk_list.append(user_id)
+                self.afk_meta[user_id] = time.time()
                 await ctx.send(prettify("You are added to afk list"))
             else:
                 await ctx.send(prettify("You are already in afk list"))
@@ -90,7 +94,11 @@ class General(commands.Cog, name="General Commands"):
             if user_id in self.afk_list:
                 
                 self.afk_list.remove(user_id)
+
+                elapsed_time = time.time() - self.afk_meta[user_id]
+                self.afk_meta.pop(user_id)
                 await ctx.send(prettify("You are removed from afk list"))
+                await ctx.send(prettify(f"You have been afk for {convert_time(elapsed_time)}"))
 
             else:
                 await ctx.send(prettify("You are not in afk list"))
