@@ -1,7 +1,8 @@
+import asyncio
 import discord
 from discord.ext import commands
 from datetime import datetime
-from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color
+from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list
 
 class Calc:
 
@@ -24,6 +25,7 @@ class Calc:
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
+        self.afk_list = []
 
         DATA = load_bot_data()
         self.prefix = DATA['prefix']
@@ -74,7 +76,7 @@ class General(commands.Cog, name="General Commands"):
         await ctx.send(embed = emb)
 
     @commands.command()
-    async def TEST(self, ctx):
+    async def profile(self, ctx):
 
         rand_color = get_random_color()
 
@@ -93,6 +95,48 @@ class General(commands.Cog, name="General Commands"):
         emb.set_footer(text=f"User id: {user_id}")
 
         await ctx.send(embed=emb)
+
+    @commands.command()
+    async def afk(self, ctx, stat: str):
+        
+        if stat == "on":
+            user_id = ctx.author.id
+            if user_id not in self.afk_list:    
+                self.afk_list.append(user_id)
+                await ctx.send(prettify("You are added to afk list"))
+            else:
+                await ctx.send(prettify("You are already in afk list"))
+
+        elif stat == "off":
+            user_id = ctx.author.id
+            if user_id in self.afk_list:
+                
+                self.afk_list.remove(user_id)
+                await ctx.send(prettify("You are removed from afk list"))
+
+            else:
+                await ctx.send(prettify("You are not in afk list"))
+        
+        else:
+            await ctx.send(prettify("Requirement is not satisfied! ($afk <on/off>)"))
+
+    @commands.command()
+    async def afk_list(self, ctx):
+        afk_users = [self.bot.get_user(id).name for id in self.afk_list]
+        if afk_users:
+            await ctx.send(create_list("Afk List:", afk_users))
+        else:
+            await ctx.send(prettify("No afk user found!."))
+
+    @commands.Cog.listener()
+    async def on_message(self, msg):
+        user_id = msg.author.id
+        if user_id in self.afk_list:
+            await msg.delete()
+            info_msg = await msg.channel.send(prettify("You are in afk list! You can talk only if you get out of it."))
+            await asyncio.sleep(2)
+            await info_msg.delete()
+            await asyncio.sleep(3)
 
 def setup(bot):
     bot.add_cog(General(bot))
