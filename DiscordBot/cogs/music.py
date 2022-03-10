@@ -16,7 +16,8 @@ class Music(commands.Cog):
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
         self.vc = None
-       
+
+    @commands.command()  
     def search_yt(self, item):
         with YoutubeDL(self.YDL_OPTIONS) as ydl:
             try: 
@@ -26,6 +27,7 @@ class Music(commands.Cog):
 
         return {'source': info['formats'][0]['url'], 'title': info['title']}
 
+    @commands.command()
     def play_next(self):
         if len(self.music_queue) > 0:
             self.is_playing = True
@@ -40,7 +42,7 @@ class Music(commands.Cog):
         else:
             self.is_playing = False
 
-   
+    @commands.command()
     async def play_music(self, ctx):
         if len(self.music_queue) > 0:
             self.is_playing = True
