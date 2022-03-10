@@ -4,24 +4,6 @@ from discord.ext import commands
 from datetime import datetime
 from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list
 
-class Calc:
-
-    @staticmethod
-    def sum(num1, num2):
-        return num1 + num2
-    
-    @staticmethod
-    def subs(num1, num2):
-        return num1 - num2
-
-    @staticmethod
-    def mult(num1, num2):
-        return num1 * num2
-
-    @staticmethod
-    def div(num1, num2):
-        return num1 / num2
-
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
@@ -39,10 +21,6 @@ class General(commands.Cog, name="General Commands"):
         now = datetime.now()
         date_time = now.strftime("%m/%d/%Y, %H:%M, %A")
         await ctx.send(prettify(date_time))
-
-    @commands.command(description="Basic calculator")
-    async def calc(self, ctx, *args):
-        print(args)
 
     @commands.command(description="Display general info about user")
     async def info(self, ctx):
