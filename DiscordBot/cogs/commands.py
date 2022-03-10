@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from datetime import datetime
-from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght
+from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color
 
 class Calc:
 
@@ -72,6 +72,27 @@ class General(commands.Cog, name="General Commands"):
         emb.set_footer(text="Information requested by: {}".format(ctx.author.display_name))
 
         await ctx.send(embed = emb)
+
+    @commands.command()
+    async def TEST(self, ctx):
+
+        rand_color = get_random_color()
+
+        user = ctx.author
+        user_avatar_url = user.avatar_url
+        user_name = user.display_name
+        user_disc = user.discriminator
+        user_id = user.id
+        user_created_at = user.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+
+        emb = discord.Embed(title=user_name.upper(), color=rand_color)
+        emb.set_author(name=user_name, icon_url=user_avatar_url)
+        emb.set_thumbnail(url=user_avatar_url)
+        emb.add_field(name="General Information", value=user_name+"#"+user_disc, inline=False)
+        emb.add_field(name="Account Created At", value=user_created_at, inline=False)
+        emb.set_footer(text=f"User id: {user_id}")
+
+        await ctx.send(embed=emb)
 
 def setup(bot):
     bot.add_cog(General(bot))

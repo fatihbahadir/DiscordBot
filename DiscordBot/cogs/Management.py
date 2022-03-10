@@ -1,15 +1,18 @@
 import discord
 from discord.ext import commands
-from Utils.util import create_list
-from Utils.util import prettify
+from Utils.util import prettify, create_list, get_channels, load_bot_data
 import asyncio
 import os
+from discord.utils import get
 
 REQ_ROLE = "tenkstu"
 
 class Management(commands.Cog, name="Management Commands"):
     def __init__(self, bot):
         self.bot = bot
+
+        DATA = load_bot_data()
+        self.needed_channels = DATA['needed-channels']
 
     @commands.command(description="Kick specified user from server")
     @commands.has_role(REQ_ROLE)
@@ -77,6 +80,32 @@ class Management(commands.Cog, name="Management Commands"):
             await asyncio.sleep(wait)
         await user.remove_roles(roleobject)
         await ctx.send(f":white_check_mark: {user} was unmuted")
+
+    @commands.command(description="Create missin channels")
+    @commands.has_role(REQ_ROLE)
+    async def mis_channels(self, ctx):
+        text_channel_list = get_channels(self.bot)
+        missing_channels = [channel for channel in self.needed_channels if channel not in [chan[0] for chan in text_channel_list]]
+
+        chan_list = await ctx.send(create_list("Missing Channels:", missing_channels, numeric=True))
+
+        guild = ctx.guild
+        member = ctx.author
+        admin_role = get(guild.roles, name=REQ_ROLE)
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            member: discord.PermissionOverwrite(read_messages=True),
+            admin_role: discord.PermissionOverwrite(read_messages=True)
+        }
+
+        for chan in missing_channels:
+            await guild.create_text_channel(chan, overwrites=overwrites)
+
+        await chan_list.edit(content=create_list("New Channels:", missing_channels))
+        info_msg = await ctx.send(prettify("Channels are created succesfully!"))
+        await asyncio.sleep(3)
+        await info_msg.delete()
+        await asyncio.sleep(4)
 
 def setup(bot):
     bot.add_cog(Management(bot))

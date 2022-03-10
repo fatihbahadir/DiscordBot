@@ -68,3 +68,10 @@ def remove_chars(text):
     for search, replace in replace_chars:
         text = text.replace(search, replace)
     return text
+
+def get_channels(bot):
+    text_channel_list = []
+    for guild in bot.guilds:
+        for channel in guild.text_channels:
+            text_channel_list.append((channel.name, channel.id))
+    return text_channel_list

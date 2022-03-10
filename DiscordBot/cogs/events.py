@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
-from Utils.util import prettify, load_bot_data
+from Utils.util import prettify, load_bot_data, create_list, get_channels
+import asyncio
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -13,12 +14,22 @@ class Events(commands.Cog):
         self.prefix = DATA['prefix']
         self.main_channel_id = DATA['main-channel']
         self.new_role = DATA['new-role']
+        self.needed_channels = DATA['needed-channels']
 
     # Initial Command
     @commands.Cog.listener()
     async def on_ready(self):
         print("Bot is online now")
+
+        text_channel_list = get_channels(self.bot)
+        missing_channels = [channel for channel in self.needed_channels if channel not in [chan[0] for chan in text_channel_list]]
+        
         await self.bot.get_channel(self.main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
+        if missing_channels:
+            info_msg = await self.bot.get_channel(self.main_channel_id).send(create_list("Missing Channels:", missing_channels, numeric=True))
+            await asyncio.sleep(3)
+            await info_msg.delete()
+            await asyncio.sleep(3)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):

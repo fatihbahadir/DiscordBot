@@ -8,3 +8,10 @@ random-colors:
   - 0x1ABC9C
   - 0xEB459E
   - 0xE74C3C
+
+needed-channels:
+  - suggestions
+  - bot
+  - welcome
+  - those-who-left-us
+  - log
