@@ -77,12 +77,10 @@ def get_channels(bot):
     return text_channel_list
 
 def convert_time(date):
-    if date > 3600000:
-        result = str(round(date/3600000 ,1))+"h"
-    elif date > 60000:
-        result = str(round(date/60000,1))+"m"
-    elif date > 1000:
-        result = str(round(date/1000 ,1))+"s"
+    if date > 3600:
+        result = str(round(date/3600,1))+" h"
+    elif date > 60:
+        result = str(round(date/60 ,1))+" m"
     else:
-        result = str(round(date, 1))+"ms"
+        result = str(round(date, 1))+" s"
     return result

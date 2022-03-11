@@ -83,9 +83,10 @@ class General(commands.Cog, name="General Commands"):
         if stat == "on":
             user_id = ctx.author.id
             if user_id not in self.afk_list:    
-                self.afk_list.append(user_id)
                 self.afk_meta[user_id] = time.time()
-                await ctx.send(prettify("You are added to afk list"))
+                self.afk_list.append(user_id)
+                full_name = ctx.author.name+"#"+ctx.author.discriminator
+                await ctx.send(prettify(f"You are added to afk list ({full_name})"))
             else:
                 await ctx.send(prettify("You are already in afk list"))
 
@@ -101,7 +102,8 @@ class General(commands.Cog, name="General Commands"):
                 await ctx.send(prettify(f"You have been afk for {convert_time(elapsed_time)}"))
 
             else:
-                await ctx.send(prettify("You are not in afk list"))
+                full_name = ctx.author.name+"#"+ctx.author.discriminator
+                await ctx.send(prettify("You are not in afk list ({full_name})"))
         
         else:
             await ctx.send(prettify("Requirement is not satisfied! ($afk <on/off>)"))
@@ -119,10 +121,7 @@ class General(commands.Cog, name="General Commands"):
         user_id = msg.author.id
         if user_id in self.afk_list:
             await msg.delete()
-            info_msg = await msg.channel.send(prettify("You are in afk list! You can talk only if you get out of it."))
-            await asyncio.sleep(2)
-            await info_msg.delete()
-            await asyncio.sleep(3)
+            await msg.channel.send(prettify("You are in afk list! You can talk only if you get out of it."), delete_after=2)            
 
 def setup(bot):
     bot.add_cog(General(bot))

@@ -102,10 +102,7 @@ class Management(commands.Cog, name="Management Commands"):
             await guild.create_text_channel(chan, overwrites=overwrites)
 
         await chan_list.edit(content=create_list("New Channels:", missing_channels))
-        info_msg = await ctx.send(prettify("Channels are created succesfully!"))
-        await asyncio.sleep(3)
-        await info_msg.delete()
-        await asyncio.sleep(4)
+        await ctx.send(prettify("Channels are created succesfully!"), delete_after=3)
 
 def setup(bot):
     bot.add_cog(Management(bot))

@@ -26,10 +26,7 @@ class Events(commands.Cog):
         
         await self.bot.get_channel(self.main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
         if missing_channels:
-            info_msg = await self.bot.get_channel(self.main_channel_id).send(create_list("Missing Channels:", missing_channels, numeric=True))
-            await asyncio.sleep(3)
-            await info_msg.delete()
-            await asyncio.sleep(3)
+            await self.bot.get_channel(self.main_channel_id).send(create_list("Missing Channels:", missing_channels, numeric=True), delete_after=3)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
