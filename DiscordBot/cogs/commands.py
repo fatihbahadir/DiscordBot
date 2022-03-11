@@ -116,6 +116,26 @@ class General(commands.Cog, name="General Commands"):
         else:
             await ctx.send(prettify("No afk user found!."))
 
+    @commands.command()
+    async def pool(self, ctx, *, content):
+        args = content.split(",")
+        if len(args) == 3:
+            rand_color = get_random_color()
+            question, ans1, ans2 = args
+
+            emb = discord.Embed(title="Pool Request", color=rand_color)
+            emb.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            emb.add_field(name="Question", value=question, inline=False)
+            emb.add_field(name="Answers", value=f"☀️ {ans1}\n🌑 {ans2}", inline=False)
+            emb.set_footer(text=f"requested by: {ctx.author.name}#{ctx.author.discriminator}")
+
+            msg = await ctx.send(embed = emb)
+            await msg.add_reaction(emoji="☀️")
+            await msg.add_reaction(emoji="🌑")
+
+        else:
+            await ctx.send(prettify("Command not in correct typo:\n$pool <question> <first_answer> <second_answer>"))
+
     @commands.Cog.listener()
     async def on_message(self, msg):
         user_id = msg.author.id
