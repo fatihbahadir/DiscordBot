@@ -15,3 +15,10 @@ needed-channels:
   - welcome
   - those-who-left-us
   - log
+
+curr-site: "https://www.haberturk.com/"
+
+curr-indicator:
+  dollar: 'dolar'
+  euro: 'euro'
+  bitcoin: 'bitcoin'

@@ -1,10 +1,10 @@
 import asyncio
-from errno import EALREADY
 import discord
 from discord.ext import commands
 from datetime import datetime
 from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list, convert_time
 import time
+from ScrapeCurr.scrape import Scrape
 
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
@@ -14,6 +14,8 @@ class General(commands.Cog, name="General Commands"):
 
         DATA = load_bot_data()
         self.prefix = DATA['prefix']
+        self.curr_site = DATA['curr-site']
+        self.curr_data = DATA['curr-indicator']
 
     @commands.command(description="Return hello to user")
     async def Hello(self, ctx):
@@ -27,8 +29,9 @@ class General(commands.Cog, name="General Commands"):
 
     @commands.command(description="Display general info about user")
     async def info(self, ctx):
-        embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
-        embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
+        created_at = ctx.guild.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+        embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.utcnow(), color=discord.Color.blue())
+        embed.add_field(name="Server created at", value=f"{created_at}")
         embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
         embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
         embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
@@ -142,6 +145,25 @@ class General(commands.Cog, name="General Commands"):
         if user_id in self.afk_list:
             await msg.delete()
             await msg.channel.send(prettify("You are in afk list! You can talk only if you get out of it."), delete_after=2)            
+
+    @commands.command()
+    async def currency(self, ctx):
+
+        s = Scrape(self.curr_site)
+        soup = s.get_soup()
+        curr_val = s.get_curr_data(soup, self.curr_data)
+
+        emb = discord.Embed(title="Live Currencies", color=get_random_color())
+        emb.set_thumbnail(url="https://w7.pngwing.com/pngs/306/723/png-transparent-coin-scalable-graphics-icon-coin-text-gold-coin-cartoon.png")
+        emb.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+
+        for item in curr_val:
+            item_name, item_val, rate = item
+            emb.add_field(name=item_name ,value=item_val.title()+"\n"+rate ,inline=False)
+
+        emb.set_footer(text=f"requested by: {ctx.author.name}#{ctx.author.discriminator}")
+
+        await ctx.send(embed=emb)
 
 def setup(bot):
     bot.add_cog(General(bot))
