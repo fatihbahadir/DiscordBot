@@ -3,8 +3,7 @@ from discord.ext import commands
 from Utils.util import prettify,create_list
 from random import randint
 import random
-import requests
-from bs4 import BeautifulSoup
+
 class Game:
 
     @staticmethod
@@ -98,19 +97,7 @@ class Fun(commands.Cog,name="Fun Commands"):
             await ctx.send(prettify("Correct"))
         else:
             await ctx.send(prettify(f"Nope it was {computer}"))
-    
-    @commands.command(description="Bitcoin Price")
-    async def btcprice(self,ctx):
-       url=requests.get("https://coinmarketcap.com/")
-       soup= BeautifulSoup(url.content,features="html.parser")
-       tagBtc=soup.findAll("a",{"href":"/currencies/bitcoin/markets/"})
-       cntr=0
-       for btc in tagBtc:
-           price=btc.text
-           await ctx.send(prettify(f"BTC price is {price} USD"))
-           cntr +=1
-           if cntr ==1:
-                break
+   
 
 def setup(bot):
     bot.add_cog(Fun(bot))

@@ -5,7 +5,8 @@ from discord.ext import commands
 from datetime import datetime
 from Utils.util import prettify, load_bot_data, get_random_color, adjust_commands, get_max_lenght, get_random_color, create_list, convert_time
 import time
-
+import requests
+from bs4 import BeautifulSoup
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
@@ -142,6 +143,21 @@ class General(commands.Cog, name="General Commands"):
         if user_id in self.afk_list:
             await msg.delete()
             await msg.channel.send(prettify("You are in afk list! You can talk only if you get out of it."), delete_after=2)            
+    
+     
+    @commands.command(description="Bitcoin Price")
+    async def btcprice(self,ctx):
+       url=requests.get("https://coinmarketcap.com/")
+       soup= BeautifulSoup(url.content,features="html.parser")
+       tagBtc=soup.findAll("a",{"href":"/currencies/bitcoin/markets/"})
+       cntr=0
+       for btc in tagBtc:
+           price=btc.text
+           await ctx.send(prettify(f"BTC price is {price} USD"))
+           cntr +=1
+           if cntr ==1:
+                break
 
+    
 def setup(bot):
     bot.add_cog(General(bot))
