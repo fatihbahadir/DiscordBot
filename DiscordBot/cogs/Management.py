@@ -82,13 +82,14 @@ class Management(commands.Cog, name="Management Commands"):
     @commands.has_role(REQ_ROLE)
     async def mis_channels(self, ctx):
         text_channel_list = get_channels(self.bot)
-        missing_channels = [channel for channel in self.needed_channels if channel not in [chan[0] for chan in text_channel_list]]
+        missing_channels = [(channel, self.needed_channels[channel]) for channel in self.needed_channels.keys() if channel not in [chan[0] for chan in text_channel_list]]
 
         chan_list = await ctx.send(create_list("Missing Channels:", missing_channels, numeric=True))
 
         guild = ctx.guild
         member = ctx.author
         admin_role = get(guild.roles, name=REQ_ROLE)
+        
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(read_messages=False),
             member: discord.PermissionOverwrite(read_messages=True),
@@ -96,9 +97,15 @@ class Management(commands.Cog, name="Management Commands"):
         }
 
         for chan in missing_channels:
-            await guild.create_text_channel(chan, overwrites=overwrites)
+            channel_name, private = chan
+            
+            if private:
+                await guild.create_text_channel(channel_name, overwrites=overwrites)
+            else:
+                await guild.create_text_channel(channel_name)
 
-        await chan_list.edit(content=create_list("New Channels:", missing_channels))
+        created_channels = [f"{x} (private)" if y else x for x, y in missing_channels]
+        await chan_list.edit(content=create_list("New Channels:", created_channels))
         await ctx.send(prettify("Channels are created succesfully!"), delete_after=3)
 
 def setup(bot):

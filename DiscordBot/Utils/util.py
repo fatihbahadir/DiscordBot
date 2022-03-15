@@ -26,9 +26,6 @@ def create_list(title, items, numeric=False):
         message = prettify("\n "+title.upper()+"\n"+"\n".join(["- "+i for i in items]))
     return message
 
-def crete_profile(member):
-    return member
-
 def get_random_color():
     color_list = load_bot_data()["random-colors"]
     selected_color = color_list[randint(0,len(color_list)-1)]

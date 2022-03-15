@@ -10,11 +10,12 @@ random-colors:
   - 0xE74C3C
 
 needed-channels:
-  - suggestions
-  - bot
-  - welcome
-  - those-who-left-us
-  - log
+  suggestions: False
+  bot: True
+  welcome: False
+  those-who-left-us: False
+  log: True
+  game: False
 
 curr-site: "https://www.haberturk.com/"
 
