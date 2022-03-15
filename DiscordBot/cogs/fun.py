@@ -67,8 +67,6 @@ class Hungman:
 
         if len(self.wrong_letters) > 6:
             self.run = False
-
-    def init(self):
         
         # Init hungman pattern
         folder_loc = "Data/hungsman_stages/"
