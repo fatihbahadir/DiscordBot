@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 from Utils.util import prettify, load_bot_data, create_list, get_channels
-import asyncio
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -27,6 +26,12 @@ class Events(commands.Cog):
         await self.bot.get_channel(self.main_channel_id).send(prettify("Dady is home bitches!. 🥳"))
         if missing_channels:
             await self.bot.get_channel(self.main_channel_id).send(create_list("Missing Channels:", missing_channels, numeric=True), delete_after=3)
+
+        for guild in self.bot.guilds:
+            if "bot" not in guild.text_channels:
+                # Create Channel Çalışmıyor
+                # spesific bir channel için kanal açmayı öğren
+                await self.bot.create_channel(guild, 'bot', type=discord.ChannelType.text)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):

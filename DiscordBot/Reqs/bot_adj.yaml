@@ -11,7 +11,7 @@ random-colors:
 
 needed-channels:
   suggestions: False
-  bot: True
+  bot-test: True
   welcome: False
   those-who-left-us: False
   log: True
