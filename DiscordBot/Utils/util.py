@@ -60,6 +60,29 @@ def get_yt_title(urls):
     
     return video_data
 
+def check_steam_profile(url):
+    html = urllib.request.urlopen(url)
+    soup = BeautifulSoup(html, "html.parser")
+    error_message = soup.find("div", {"id": "message"})
+
+    return soup
+
+def get_steam_profile(ctx):
+    
+    profile_meta = {}
+    profile_meta["name"] = ctx.find("div", {"class": "persona_name"}).span.text
+    profile_meta['avatar_url'] = ctx.find("div", {"class":"playerAvatarAutoSizeInner"}).find_all("img")[-1]['src']
+
+    all_counters = ctx.find("div", {"class":"profile_content has_profile_background"}).find_all("span", {"class": "profile_count_link_total"})
+    counter_vars = [item.text.replace("\t","").replace("\r","").replace("\n","").replace(" ","") for item in all_counters]
+    profile_meta['rozet'] = counter_vars[0]
+    profile_meta['games'] = counter_vars[1]
+
+    profile_meta["level"] = ctx.find("div", {"class":"friendPlayerLevel"}).text
+
+
+    return profile_meta
+
 def remove_chars(text):
     replace_chars = [ ('ı','i'), ('İ','I'), ('ü','u'), ('Ü','U'), ('ö','o'), ('Ö','O'), ('ç','c'), ('Ç','C'), ('ş','s'), ('Ş','S'), ('ğ','g'), ('Ğ','G') ]
     for search, replace in replace_chars:

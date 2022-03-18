@@ -2,7 +2,7 @@ from pydoc import describe
 from venv import create
 import discord
 from discord.ext import commands
-from Utils.util import prettify, create_list, get_yt_ids, get_yt_title, remove_chars
+from Utils.util import prettify, create_list, get_yt_ids, get_yt_title, remove_chars, check_steam_profile, get_steam_profile
 
 class Scrape(commands.Cog):
     def __init__(self, bot):
@@ -10,9 +10,20 @@ class Scrape(commands.Cog):
         self.yt_query_url = "https://www.youtube.com/results?search_query="
         self.yt_url = "https://www.youtube.com/watch?v="
 
+        self.steam_profile_query = "https://steamcommunity.com/id/"
+
     @commands.command(description="**UNDER CONSTRUCTION**")
-    async def steamPP(self, ctx, link = None):
-        ctx.send("General Steam Profile: "+ link)
+    async def steamPP(self, ctx, url = None):
+        if not url.startswith(self.steam_profile_query):
+            await ctx.send(prettify("Given url is not allowed"))
+            return
+
+        content = check_steam_profile(url)
+        
+        profile_meta = get_steam_profile(content)
+
+        await ctx.send(profile_meta)
+
 
     @commands.command(description="Search youtube video and return its url")
     async def youtube(self, ctx, *url_name: commands.clean_content):
