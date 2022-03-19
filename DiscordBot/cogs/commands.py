@@ -1,5 +1,3 @@
-import asyncio
-from errno import EALREADY
 import discord
 from discord.ext import commands
 from datetime import datetime
@@ -7,6 +5,7 @@ from Utils.util import prettify, load_bot_data, get_random_color, adjust_command
 import time
 import requests
 from bs4 import BeautifulSoup
+
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
         self.bot = bot
@@ -28,7 +27,7 @@ class General(commands.Cog, name="General Commands"):
 
     @commands.command(description="Display general info about user")
     async def info(self, ctx):
-        embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.datetime.utcnow(), color=discord.Color.blue())
+        embed = discord.Embed(title=f"{ctx.guild.name}", description="The server is created for developing a Discord Bot.", timestamp=datetime.utcnow(), color=discord.Color.blue())
         embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
         embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
         embed.add_field(name="Server Region", value=f"{ctx.guild.region}")

@@ -1,8 +1,7 @@
-from pydoc import describe
-from venv import create
 import discord
 from discord.ext import commands
-from Utils.util import prettify, create_list, get_yt_ids, get_yt_title, remove_chars, check_steam_profile, get_steam_profile
+from Utils.util import prettify, create_list, get_yt_ids, get_yt_title, remove_chars, check_steam_profile, get_steam_profile, get_random_color
+from datetime import datetime
 
 class Scrape(commands.Cog):
     def __init__(self, bot):
@@ -10,19 +9,44 @@ class Scrape(commands.Cog):
         self.yt_query_url = "https://www.youtube.com/results?search_query="
         self.yt_url = "https://www.youtube.com/watch?v="
 
-        self.steam_profile_query = "https://steamcommunity.com/id/"
+        self.steam_profile_query = "https://steamcommunity.com/"
 
     @commands.command(description="**UNDER CONSTRUCTION**")
     async def steamPP(self, ctx, url = None):
+        
+        await ctx.message.delete()
+        
         if not url.startswith(self.steam_profile_query):
             await ctx.send(prettify("Given url is not allowed"))
             return
 
         content = check_steam_profile(url)
-        
         profile_meta = get_steam_profile(content)
 
-        await ctx.send(profile_meta)
+        emb = discord.Embed(title="Steam Profile", color=get_random_color(), timestamp=datetime.utcnow())
+        # emb.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+        emb.set_thumbnail(url=profile_meta['avatar-url'])
+        emb.add_field(name="Profile Name", value=profile_meta['name'], inline=False)
+        emb.add_field(name="Badget", value=profile_meta['rozet'], inline=True)
+        emb.add_field(name="Games", value=profile_meta['games'], inline=True)
+        emb.add_field(name="Level", value=profile_meta['level'], inline=False)
+        
+        max_game_url = [0, None]
+        for game in profile_meta['recent-games']:
+            game_url, game_time, game_name  = game
+            total, recent = game_time
+            emb.add_field(name=game_name.upper(),value="Total : "+total+"\nRecent : "+recent, inline=False)
+            
+            max_tot_val = float(total.split(" ")[0].replace(",", "."))
+            if max_tot_val > max_game_url[0]:
+                max_game_url = [max_tot_val, game_url]
+
+
+        emb.set_image(url=max_game_url[1])
+        emb.set_footer(text=f"requested by {ctx.author.display_name}#{ctx.author.discriminator}", icon_url=ctx.author.avatar_url)
+
+        await ctx.send(embed=emb)
+
 
 
     @commands.command(description="Search youtube video and return its url")

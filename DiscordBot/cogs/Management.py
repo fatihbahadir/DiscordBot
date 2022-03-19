@@ -54,7 +54,7 @@ class Management(commands.Cog, name="Management Commands"):
     @commands.has_role(REQ_ROLE)
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount+1)
-        await ctx.send(prettify(f"I have deleted {amount} messages.", delete_after=3)) 
+        await ctx.send(prettify(f"I have deleted {amount} messages."), delete_after=3) 
 
     @commands.command(description="Listing all the modules(Cogs)")
     @commands.has_role(REQ_ROLE)
