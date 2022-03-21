@@ -16,6 +16,7 @@ needed-channels:
   those-who-left-us: False
   log: True
   game: False
+  request: True
 
 curr-site: "https://www.haberturk.com/"
 

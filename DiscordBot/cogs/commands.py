@@ -157,6 +157,23 @@ class General(commands.Cog, name="General Commands"):
            if cntr ==1:
                 break
 
-    
+    @commands.command(description="Make a request. (Wishes, Thanks, Compliments)")
+    async def request(self, ctx, title, *, reason):
+        
+        channel = discord.utils.get(ctx.guild.channels, name="request")
+
+        if channel:
+
+            emb = discord.Embed(title=title.upper(), description=reason, color=get_random_color(), timestamp=datetime.utcnow())
+            emb.set_author(name=f"{ctx.author.display_name}#{ctx.author.discriminator}", icon_url=ctx.author.avatar_url)
+            emb.set_footer(text=f"requested by: {ctx.author.id}", icon_url=self.bot.user.avatar_url)
+
+            await channel.send(embed=emb)
+
+            await ctx.send(prettify(f"Thank you for your request {ctx.author.name}!."))
+
+        else:
+            await ctx.send(prettify("No channel found: 'request'"))
+
 def setup(bot):
     bot.add_cog(General(bot))

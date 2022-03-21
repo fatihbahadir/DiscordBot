@@ -74,7 +74,7 @@ def get_steam_profile(ctx):
     profile_meta['avatar-url'] = ctx.find("div", {"class":"playerAvatarAutoSizeInner"}).find_all("img")[-1]['src']
     profile_meta["level"] = ctx.find("div", {"class":"friendPlayerLevel"}).text
 
-    all_counters = ctx.find("div", {"class":"profile_content has_profile_background"}).find_all("span", {"class": "profile_count_link_total"})
+    all_counters = ctx.find("div", {"class":"profile_content"}).find_all("span", {"class": "profile_count_link_total"})
     counter_vars = [item.text.replace("\t","").replace("\r","").replace("\n","").replace(" ","") for item in all_counters]
     profile_meta['rozet'] = counter_vars[0]
     profile_meta['games'] = counter_vars[1]
