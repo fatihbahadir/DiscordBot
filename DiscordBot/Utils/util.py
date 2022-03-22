@@ -113,3 +113,10 @@ def convert_time(date):
     else:
         result = str(round(date, 1))+" s"
     return result
+
+
+def fetch_json_data():
+    pass
+
+def dump_json_data ():
+    pass

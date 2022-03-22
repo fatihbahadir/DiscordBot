@@ -25,6 +25,7 @@ class Game:
 class Fun(commands.Cog,name="Fun Commands"):
     def __init__(self,bot):
         self.bot = bot
+        self.counter=0
 
     @commands.command(description="Repeat something as many times as you want ")
     async def repeat(self, ctx, times : int, content="repeating"):
@@ -97,6 +98,11 @@ class Fun(commands.Cog,name="Fun Commands"):
             await ctx.send(prettify("Correct"))
         else:
             await ctx.send(prettify(f"Nope it was {computer}"))
+    
+    @commands.command(description="A counter")
+    async def thankstu(self,ctx):
+        self.counter+=1
+        await ctx.send(prettify(f'Thanksto counter is now %d' %self.counter))
    
 
 def setup(bot):
