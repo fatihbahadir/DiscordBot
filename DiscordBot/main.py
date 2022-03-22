@@ -2,6 +2,7 @@ from Utils.util import prettify, load_bot_data
 import discord
 from discord.ext import commands
 import os
+import asyncio
 
 # Initial Data Assignment
 DATA = load_bot_data()
@@ -30,6 +31,14 @@ async def unload(ctx, extention):
         await ctx.send(f"{extention} has unloaded succesfully! ❌")
     except commands.ExtensionNotFound:
         await ctx.send(prettify(f"No module named as {extention}"))
+
+@Bot.command()
+async def reload(ctx, extention):
+    
+    await cog_switch(ctx, extention)
+    await asyncio.sleep(3)
+    await cog_switch(ctx, extention)
+
 
 @Bot.command()
 async def cog_switch(ctx, cog_name):

@@ -3,6 +3,8 @@ from discord.ext import commands
 from Utils.util import prettify,create_list
 from random import randint
 import random
+import wikipedia
+from Utils.util import add_garbage, fetch_json_data
 
 class Game:
 
@@ -24,8 +26,11 @@ class Game:
 
 class Fun(commands.Cog,name="Fun Commands"):
     def __init__(self,bot):
+        
+        json_data = fetch_json_data()        
         self.bot = bot
-        self.counter=0
+
+        self.counter = json_data['garbage']['tenkstu'] if "tenkstu" in json_data['garbage'] else 0
 
     @commands.command(description="Repeat something as many times as you want ")
     async def repeat(self, ctx, times : int, content="repeating"):
@@ -102,8 +107,8 @@ class Fun(commands.Cog,name="Fun Commands"):
     @commands.command(description="A counter")
     async def thankstu(self,ctx):
         self.counter+=1
-        await ctx.send(prettify(f'Thanksto counter is now %d' %self.counter))
-   
+        await ctx.send(prettify(f'Thankstu counter is now %d' %self.counter))
+        add_garbage("tenkstu", self.counter)
 
 def setup(bot):
     bot.add_cog(Fun(bot))

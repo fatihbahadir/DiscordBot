@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 from Utils.util import prettify, create_list, get_yt_ids, get_yt_title, remove_chars, check_steam_profile, get_steam_profile, get_random_color
-from datetime import datetime
-
+import wikipedia
 class Scrape(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -10,6 +9,7 @@ class Scrape(commands.Cog):
         self.yt_url = "https://www.youtube.com/watch?v="
 
         self.steam_profile_query = "https://steamcommunity.com/"
+        self.wikipedia_query = "https://tr.wikipedia.org/w/index.php?search={}&title=%C3%96zel%3AAra&ns0=1"
 
     @commands.command(description="**UNDER CONSTRUCTION**")
     async def steamPP(self, ctx, url = None):
@@ -77,6 +77,13 @@ class Scrape(commands.Cog):
             await ctx.send(prettify(f"Please enter valid number"))
 
         await vid_lst.delete()
+
+    @commands.command(description="gdajkghfjkhgahjk")
+    async def whois(self, ctx, *, search):
+        
+        # await ctx.send(wikipedia.summary("".join(search), sentences=1))
+        pass
+
 
 def setup(bot):
     bot.add_cog(Scrape(bot))
