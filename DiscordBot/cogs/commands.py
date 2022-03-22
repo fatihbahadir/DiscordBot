@@ -5,6 +5,7 @@ from Utils.util import prettify, load_bot_data, get_random_color, adjust_command
 import time
 import requests
 from bs4 import BeautifulSoup
+# import reactionmenu as rm
 
 class General(commands.Cog, name="General Commands"):
     def __init__(self, bot):
@@ -174,6 +175,37 @@ class General(commands.Cog, name="General Commands"):
 
         else:
             await ctx.send(prettify("No channel found: 'request'"))
+
+    @commands.command()
+    async def TEST(self, ctx):
+
+        pass
+        # menu = rm.ReactionMenu(ctx, back_button="◀️", next_buttom="▶️", config = rm.ReactionMenu.STATIC)
+
+        # page1 = discord.Embed(title="Page1")
+        # page2 = discord.Embed(title="Page2")
+        # costum = discord.Embed(title="Custom!")
+        
+        # fpb = rm.Button(emoji="⏭️", linked_to = rm.ButtonType.GO_TO_FIRST_PAGE)
+        # lpb = rm.Button(emoji="⏮️", linked_to = rm.ButtonType.GO_TO_LAST_PAGE)
+        # gtpb = rm.Button(emoji="🔍", linked_to = rm.ButtonType.GO_TO_PAGE)
+        # esb = rm.Button(emoji="❌", linked_to = rm.ButtonType.END_SESSION)
+        # ceb = rm.Button(emoji="<:discord:935799521487773697>", linked_to = rm.ButtonType.CUSTOM_EMBED, embed=costum)
+        
+        # menu.add_page(page1)
+        # menu.add_page(page2)
+
+        # menu.add_button(fpb)
+        # menu.add_button(lpb)
+        # menu.add_button(gtpb)
+        # menu.add_button(esb)
+        # menu.add_button(ceb)
+
+        # member_details = []
+        # for member_embed in member_details:
+        #     menu.add_page(member_embed)
+
+        # await menu.start()
 
 def setup(bot):
     bot.add_cog(General(bot))
