@@ -108,5 +108,29 @@ class Management(commands.Cog, name="Management Commands"):
         await chan_list.edit(content=create_list("New Channels:", created_channels))
         await ctx.send(prettify("Channels are created succesfully!"), delete_after=3)
 
+    @commands.command()
+    @commands.has_role(REQ_ROLE)
+    async def history(self, ctx, channel_name):
+        try:
+            channel = discord.utils.get(ctx.guild.channels, name=channel_name)
+        except Exception:
+            await ctx.send(prettify(f"No channel name : '{channel_name}'"))
+            return
+
+        messages = await channel.history(limit=200).flatten()
+
+        titles = []
+        for message in messages:
+            content = message.content
+            try:
+                title_row = content.split("\n")[1]
+            except Exception:
+                title_row = ""
+
+            if content.startswith("```java") and title_row.startswith("//"):
+                titles.append(title_row.replace("//", ""))
+
+        await ctx.send(create_list(f"Functions of '{channel_name}' Channel:", titles, numeric=True))
+
 def setup(bot):
     bot.add_cog(Management(bot))
